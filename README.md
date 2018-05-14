@@ -1,6 +1,8 @@
 # ComputerVision_utils
 Some facts, libraries, links, etc. Whatever can be useful to use in computer vision and is not straight-forward to realize
 
+## Amazing links:
+https://github.com/jbhuang0604/awesome-computer-vision
 
 ## Rpi Gstreamer pipeline without lag to xwindow
 ### Emiter
