@@ -4,6 +4,10 @@ Some facts, libraries, links, etc. Whatever can be useful to use in computer vis
 ## Amazing links:
 https://github.com/jbhuang0604/awesome-computer-vision
 
+
+## How-to install RealSense on Jetson devices
+https://github.com/jetsonhacks/buildLibrealsense2TX
+
 ## Rpi Gstreamer pipeline without lag to xwindow
 ### Emiter
 ```
