@@ -1,7 +1,7 @@
 import os
 import sys
 import glob
-sys.path.insert(0, '/home/esteve/ComputerVision_utils/scripts')
+sys.path.insert(0, 'scripts')
 import XmlObjectFinder
 
 input_folder = '/media/esteve/1615F2A532ED483C/Ubuntu/ML/fish_dataset/imagenet_dataset/imagenet_split_renamed'
