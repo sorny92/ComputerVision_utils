@@ -3,12 +3,15 @@ from random import shuffle
 from PIL import Image
 from progress.bar import Bar 
 import sys
+import os
 sys.path.insert(0, 'scripts')
 import utils.LabelConverter as LabelConverter
+from subprocess import call
 
 input_train_folders = ['/media/esteve/1615F2A532ED483C/Ubuntu/ML/fish_dataset/imagenet_dataset/imagenet_split_renamed/labeled_images']
 input_test_folders = ['']
 output_folder = '/media/esteve/1615F2A532ED483C/Ubuntu/ML/fish_dataset/imagenet_dataset/imagenet_split_renamed/labeled_images'
+label_map_path= '/media/esteve/1615F2A532ED483C/Ubuntu/ML/fish_dataset/imagenet_dataset/imagenet_split_renamed/labeled_images/label_map.prototxt'
 
 isRandomTestSet = True
 testset_percentage = 0.1
@@ -55,4 +58,30 @@ for line in test_set:
     test_names_file.write('{} {} {}\n'.format('/'.join(line[0].split('/')[-3:]), width, height))
     bar.next()
 bar.finish()
+train_file.close()
+test_file.close()
 
+caffe_root = os.environ['CAFFE_ROOT']
+if not len(caffe_root):
+    raise Exception('Have you declared CAFFE_ROOT in your environment?')
+call(["{}/build/tools/convert_annoset".format(caffe_root), 
+      "-anno_type=detection", 
+      "-check_label",  
+      "-encode_type=jpg",  
+      "-encoded", 
+      "-label_map_file={}".format(label_map_path),
+      "-shuffle",
+      '{}/'.format('/'.join(input_train_folders[0].split('/')[:-1])),
+      "{}/train.txt".format(output_folder),
+      "{}/train_db".format(output_folder)])
+
+call(["{}/build/tools/convert_annoset".format(caffe_root), 
+      "-anno_type=detection", 
+      "-check_label",  
+      "-encode_type=jpg",  
+      "-encoded", 
+      "-label_map_file={}".format(label_map_path),
+      "-shuffle",
+      '{}/'.format('/'.join(input_train_folders[0].split('/')[:-1])),
+      "{}/test.txt".format(output_folder),
+      "{}/test_db".format(output_folder)])
