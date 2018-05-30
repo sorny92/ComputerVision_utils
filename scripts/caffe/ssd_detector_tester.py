@@ -1,5 +1,6 @@
 from subprocess import Popen, PIPE
 import os
+import cv2
 
 caffe_root = os.environ['CAFFE_ROOT']
 
@@ -17,4 +18,10 @@ output = Popen(["{}/build/examples/ssd/ssd_detect.bin".format(caffe_root),
       test_name],stdout =PIPE)
 
 for line in output.stdout:
-      print(line.decode().split(' '))
+      data = line.decode().split(' ')
+      img = cv2.imread(data[0])
+      cv2.rectangle(img, (int(data[3]), int(data[4])), (int(data[5]), int(data[6])), (255,0,0))
+      cv2.imshow("image", img)
+      
+      cv2.waitKey(500)
+      
