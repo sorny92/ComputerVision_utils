@@ -10,12 +10,11 @@ caffe_model = caffe_root+"/models/SSD_512x512/snaps/SSD_512_iter_2000.caffemodel
 test_name = "/media/esteve/1615F2A532ED483C/Ubuntu/ML/fish_dataset/imagenet_dataset/imagenet_split_renamed/labeled_images/test_names.txt"
 
 
-output, err = Popen(["{}/build/examples/ssd/ssd_detect.bin".format(caffe_root),
+output = Popen(["{}/build/examples/ssd/ssd_detect.bin".format(caffe_root),
       "-confidence_threshold={}".format(confidence_threshold),
       deploy_file,
       caffe_model,
-      test_name],stdout =PIPE, stderr=PIPE).communicate()
+      test_name],stdout =PIPE)
 
-
-output = output.split('\n')
-print(output)
+for line in output.stdout:
+      print(line.decode().split(' '))
