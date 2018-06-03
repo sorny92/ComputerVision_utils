@@ -4,6 +4,7 @@ from PIL import Image
 from progress.bar import Bar 
 import sys
 import os
+import cv2
 sys.path.insert(0, 'scripts')
 import utils.LabelConverter as LabelConverter
 from subprocess import call
@@ -12,12 +13,16 @@ def verify_image(img_file):
     #test image
     try:
         v_image = Image.open(img_file)
+        cv_img = cv2.imread(img_file)
+        cv_img.shape
         v_image.verify()
-        return True;
+        if v_image.size[0] == 0 or v_image.size[1] == 0:
+            return False
+        return True
          #is valid
         #print("valid file: "+img_file)
     except Exception:
-        return False;
+        return False
 
 input_train_folders = ['/media/esteve/1615F2A532ED483C/Ubuntu/ML/fish_dataset/imagenet_dataset/imagenet_split_renamed']
 input_test_folders = ['']
