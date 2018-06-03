@@ -8,13 +8,24 @@ sys.path.insert(0, 'scripts')
 import utils.LabelConverter as LabelConverter
 from subprocess import call
 
-input_train_folders = ['/media/esteve/1615F2A532ED483C/Ubuntu/ML/fish_dataset/imagenet_dataset/imagenet_split_renamed/labeled_images']
+def verify_image(img_file):
+    #test image
+    try:
+        v_image = Image.open(img_file)
+        v_image.verify()
+        return True;
+         #is valid
+        #print("valid file: "+img_file)
+    except Exception:
+        return False;
+
+input_train_folders = ['/media/esteve/1615F2A532ED483C/Ubuntu/ML/fish_dataset/imagenet_dataset/imagenet_split_renamed']
 input_test_folders = ['']
-output_folder = '/media/esteve/1615F2A532ED483C/Ubuntu/ML/fish_dataset/imagenet_dataset/imagenet_split_renamed/labeled_images'
+output_folder = '/media/esteve/1615F2A532ED483C/Ubuntu/ML/fish_dataset/imagenet_dataset/imagenet_split_renamed'
 label_map_path= '/media/esteve/1615F2A532ED483C/Ubuntu/ML/fish_dataset/imagenet_dataset/imagenet_split_renamed/labeled_images/label_map.prototxt'
 
 isRandomTestSet = True
-testset_percentage = 0.1
+testset_percentage = 0.01
 
 if not isRandomTestSet:
     for input_test_folder in input_test_folders:
@@ -28,8 +39,12 @@ for input_train_folder in input_train_folders:
     if len(labels_paths) == 0:
         raise Exception('ARE YOU SURE THERE IS LABELS IN THE FOLDER {}/labels_voc/ ?'.format(input_train_folder))
     bar2 = Bar('Processing labels in {}'.format(input_train_folder), max=len(labels_paths))
-    for label_path in labels_paths:
+    for label_path in labels_paths[:]:
         image_path = LabelConverter.get_image_path_from_label_path(label_path)
+        if not verify_image(image_path):
+            print("LOL IS BROKEN")
+            bar2.next()
+            continue
         train_data.append([image_path, label_path])
         bar2.next()
     bar2.finish()
